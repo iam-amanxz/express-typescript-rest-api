@@ -48,6 +48,9 @@ export class Profile extends BaseEntity {
   })
   gender?: EGender;
 
+  @OneToOne(() => User)
+  owner: User;
+
   @CreateDateColumn()
   createdAt: Date;
 

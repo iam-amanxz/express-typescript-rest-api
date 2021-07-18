@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { compare } from 'bcrypt';
 
 import userService from '../services/user.service';
-import { createSession, invalidateSession } from '../services/session.service';
+import sessionService from '../services/session.service';
 import { signJWT } from '../utils/jwt.util';
 import { errorResponse, successResponse } from '../utils/response.util';
 
@@ -27,7 +27,7 @@ export class SessionController {
       return errorResponse(res, code.UNAUTHORIZED, 'invalid credentials');
 
     // create session
-    const session = createSession(user.id, username);
+    const session = sessionService.createSession(user.id, username);
 
     // create access token
     const accessToken = signJWT(
@@ -75,7 +75,7 @@ export class SessionController {
     });
 
     // @ts-ignore
-    invalidateSession(req.user.sessionId);
+    sessionService.invalidateSession(req.user.sessionId);
 
     return successResponse(res, code.OK);
   }

@@ -72,11 +72,8 @@ export class User extends BaseEntity {
   @JoinColumn()
   profile: Profile;
 
-  // @OneToMany(() => Topic, (topic) => topic.owner)
-  // ownedTopics: Promise<Topic>[];
-
-  // @ManyToMany(() => Topic, (topic) => topic.members)
-  // joinedTopics: Promise<Topic>[];
+  @ManyToMany(() => Topic, (topic) => topic.members)
+  joinedTopics: Topic[];
 
   // @OneToMany(() => Comment, (comment) => comment.owner)
   // comments: Promise<Comment>[];
@@ -85,6 +82,10 @@ export class User extends BaseEntity {
   async hashPassword() {
     const salt = await genSalt(12);
     this.password = await hash(this.password, salt);
+  }
+
+  static findByUsername(username: string) {
+    return this.findOne({ username });
   }
 
   toJSON() {

@@ -12,6 +12,17 @@ router.put(
   adminController.updateUserRole,
 );
 
-// router.post('/users', userController.createUser);
+// get user
+router.get('/admin/users/:username', requireAdmin, adminController.getUser);
+
+// delete user
+router.delete(
+  '/admin/users/:username',
+  requireAdmin,
+  adminController.deleteUser,
+);
+
+// delete user
+router.get('/admin/users', requireAdmin, adminController.getUsers);
 
 export default router;

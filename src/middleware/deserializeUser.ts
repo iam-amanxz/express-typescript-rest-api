@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { getSession } from '../services/session.service';
+import sessionService from '../services/session.service';
 import { signJWT, verifyJWT } from '../utils/jwt.util';
 
 export default (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +26,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
 
   // @ts-ignore
-  const session = getSession(refresh.sessionId);
+  const session = sessionService.getSession(refresh.sessionId);
 
   if (!session) {
     return next();

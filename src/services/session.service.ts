@@ -1,24 +1,28 @@
-export const sessions: Record<
-  string,
-  { sessionId: string; userId: string; username: string; valid: boolean }
-> = {};
+export class SessionService {
+  sessions: Record<
+    string,
+    { sessionId: string; userId: string; username: string; valid: boolean }
+  > = {};
 
-export function getSession(sessionId: string) {
-  const session = sessions[sessionId];
-  return session && session.valid ? session : null;
-}
-
-export function invalidateSession(sessionId: string) {
-  const session = sessions[sessionId];
-  if (session) {
-    sessions[sessionId].valid = false;
+  getSession(sessionId: string) {
+    const session = this.sessions[sessionId];
+    return session && session.valid ? session : null;
   }
-  return sessions[sessionId];
+
+  invalidateSession(sessionId: string) {
+    const session = this.sessions[sessionId];
+    if (session) {
+      this.sessions[sessionId].valid = false;
+    }
+    return this.sessions[sessionId];
+  }
+
+  createSession(userId: string, username: string) {
+    const sessionId = String(Object.keys(this.sessions).length + 1);
+    const session = { sessionId, userId, username, valid: true };
+    this.sessions[sessionId] = session;
+    return session;
+  }
 }
 
-export function createSession(userId: string, username: string) {
-  const sessionId = String(Object.keys(sessions).length + 1);
-  const session = { sessionId, userId, username, valid: true };
-  sessions[sessionId] = session;
-  return session;
-}
+export default new SessionService();
